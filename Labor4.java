@@ -5,9 +5,6 @@
  */
 package labor4;
 
-import jdk.nashorn.internal.codegen.CompilerConstants;
-
-
 public class Labor4 {
 
     static double STEP = Math.PI / 100;
@@ -24,7 +21,9 @@ public class Labor4 {
 
             @Override
             public double value(final double x) {
-                return Math.sin(m * x) / (m * x);
+                Double y = Math.sin(m * x) / (m * x);
+                // Mathematisch korrekte Behebung der Lücke für x = 0 und daraus folgendem "0/0".
+                return (y.isNaN() ? 1.0 : y);
             }
         }.init(5)),
 
@@ -62,18 +61,23 @@ public class Labor4 {
             private int n;
             private int k;
             private double e;
+            private double eps;
 
             public Fn init(final int n, final int k, final double e) {
                 this.n = n;
                 this.k = k;
                 this.e = e;
+                this.eps = Math.sin(Math.PI * (e / 2));
                 return this;
             }
 
             @Override
             public double value(double x) {
-                if (n==k) return 1;
-                else return 0;
+                return delta(Math.sin(Math.PI * x));
+            }
+
+            private double delta(double y) {
+                return (Math.abs(y) <= eps ? 1 : 0);
             }
         }.init(1, 9, STEP));
 
@@ -104,7 +108,7 @@ public class Labor4 {
     public static void main(String[] args) {
         System.out.println("x;Spalt;Dreieck;Rechteck;Kamm");
         for(double x = -Math.PI; x <= Math.PI; x += STEP) {
-            System.out.println(String.format("%s;%s%s;%s;%s",
+            System.out.println(String.format("%s;%s;%s;%s;%s",
                     String.valueOf(x).replace(".", ","),
                     String.valueOf(FN.SPALT.value(x)).replace(".", ","),
                     String.valueOf(FN.DREIECK.value(x)).replace(".", ","),
