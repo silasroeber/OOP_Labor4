@@ -70,11 +70,18 @@ public class Labor4 {
                 this.eps = Math.sin(Math.PI * (e / 2));
                 return this;
             }
-
+            /*
             @Override
             public double value(double x) {
                 return delta(Math.sin(Math.PI * x));
             }
+            */
+            
+            @Override
+            public double value(double x) {
+                return (Math.abs(x % (e * k)) <= e ? 1 : 0);
+            }
+            
 
             private double delta(double y) {
                 return (Math.abs(y) <= eps ? 1 : 0);
@@ -108,12 +115,12 @@ public class Labor4 {
     public static void main(String[] args) {
         System.out.println("x;Spalt;Dreieck;Rechteck;Kamm");
         for(double x = -Math.PI; x <= Math.PI; x += STEP) {
-            System.out.println(String.format("%s;%s;%s;%s;%s",
+            System.out.println(String.format("%s;\t%s;\t%s;\t%s;\t%s",
                     String.valueOf(x).replace(".", ","),
                     String.valueOf(FN.SPALT.value(x)).replace(".", ","),
                     String.valueOf(FN.DREIECK.value(x)).replace(".", ","),
                     String.valueOf(FN.RECHTECK.value(x)).replace(".", ","),
-                    String.valueOf(FN.KAMM.value(x)).replace(".", ",")
+                    String.valueOf(FN.KAMM.value(x)*myfunc(x)).replace(".", ",")
                     ));
         }
 
