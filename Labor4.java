@@ -102,8 +102,7 @@ public class Labor4 {
             }
         }.init(5, 9, STEP));
 
-        private Fn fn;
-		
+        private Fn fn;	
 
         FN(Fn fn) {
             this.fn = fn;
