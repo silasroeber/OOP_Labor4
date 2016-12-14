@@ -1,10 +1,11 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-package labor4;
 
+package labor4;
+/**
+ * Aufgabe 4
+ * 
+ * @author Eike Hoffmann <eike.s.hoffmann@student.fh-kiel.de>
+ * @author Silas Röber <silas.roeber@student.fh-kiel.de>
+ */
 public class Labor4 {
 
     static double STEP = Math.PI / 100;
@@ -39,9 +40,9 @@ public class Labor4 {
 
             @Override
             public double value(double x) {
-                return (x >= 0 ? -m * x + b : m * x + b);
+                return (x >= 0 ? (-m * x + b ): (m * x + b));
             }
-        }.init(5, 1)),
+        }.init(1 / Math.PI, 1)),
 
         RECHTECK(new Fn() {
             private double m;
@@ -64,29 +65,42 @@ public class Labor4 {
             private double eps;
 
             public Fn init(final int n, final int k, final double e) {
-                this.n = n;
+                this.n = n; // Als Laufvariable hochzählen bis k; vorbesetzten für 1. peek noicht bie 0 oder k
                 this.k = k;
                 this.e = e;
                 this.eps = Math.sin(Math.PI * (e / 2));
                 return this;
             }
-            /*
+            /* Alternative 1
             @Override
             public double value(double x) {
                 return delta(Math.sin(Math.PI * x));
+            }
+           
+            private double delta(double y) {
+                return (Math.abs(y) <= eps ? 1 : 0);
+            }
+            */
+       
+            /* Alternative 2
+            @Override
+            public double value(double x) {
+                return (Math.abs(x % (e * k)) <= e ? 1 : 0);
             }
             */
             
             @Override
             public double value(double x) {
-                return (Math.abs(x % (e * k)) <= e ? 1 : 0);
+                if(n==k) {
+                    n=0;
+                    return 1;
+                }
+                else {
+                    ++n;
+                    return 0;
+                }
             }
-            
-
-            private double delta(double y) {
-                return (Math.abs(y) <= eps ? 1 : 0);
-            }
-        }.init(1, 9, STEP));
+        }.init(5, 9, STEP));
 
         private Fn fn;
 		
@@ -117,9 +131,9 @@ public class Labor4 {
         for(double x = -Math.PI; x <= Math.PI; x += STEP) {
             System.out.println(String.format("%s;\t%s;\t%s;\t%s;\t%s",
                     String.valueOf(x).replace(".", ","),
-                    String.valueOf(FN.SPALT.value(x)).replace(".", ","),
-                    String.valueOf(FN.DREIECK.value(x)).replace(".", ","),
-                    String.valueOf(FN.RECHTECK.value(x)).replace(".", ","),
+                    String.valueOf(FN.SPALT.value(x)*myfunc(x)).replace(".", ","),
+                    String.valueOf(FN.DREIECK.value(x)*myfunc(x)).replace(".", ","),
+                    String.valueOf(FN.RECHTECK.value(x)*myfunc(x)).replace(".", ","),
                     String.valueOf(FN.KAMM.value(x)*myfunc(x)).replace(".", ",")
                     ));
         }
