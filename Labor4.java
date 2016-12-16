@@ -1,5 +1,8 @@
 
 package labor4;
+
+import java.text.DecimalFormat;
+
 /**
  * Aufgabe 4
  * 
@@ -126,19 +129,21 @@ public class Labor4 {
     }
 
     public static void main(String[] args) {
-        System.out.println("x;Spalt;Dreieck;Rechteck;Kamm");
+        String decFrmt = "0.0######";
+        int colWidth = decFrmt.length() + 3;
+        String frmt = "%-" + colWidth + "s%-" + colWidth + "s%-" + colWidth + "s%-" + colWidth + "s%-" + colWidth + "s";
+        DecimalFormat df = new DecimalFormat(" " + decFrmt + ";-" + decFrmt);
+
+        System.out.println(String.format(frmt, "x", "Spalt", "Dreieck", "Rechteck", "Kamm"));
         for(double x = -Math.PI; x <= Math.PI; x += STEP) {
-            System.out.println(String.format("%s;\t%s;\t%s;\t%s;\t%s",
-                    String.valueOf(x).replace(".", ","),
-                    String.valueOf(FN.SPALT.value(x)*myfunc(x)).replace(".", ","),
-                    String.valueOf(FN.DREIECK.value(x)*myfunc(x)).replace(".", ","),
-                    String.valueOf(FN.RECHTECK.value(x)*myfunc(x)).replace(".", ","),
-                    String.valueOf(FN.KAMM.value(x)*myfunc(x)).replace(".", ",")
+            System.out.println(String.format(frmt,
+                    String.valueOf(df.format(x)),
+                    String.valueOf(df.format(FN.SPALT.value(x)*myfunc(x))),
+                    String.valueOf(df.format(FN.DREIECK.value(x)*myfunc(x))),
+                    String.valueOf(df.format(FN.RECHTECK.value(x)*myfunc(x))),
+                    String.valueOf(df.format(FN.KAMM.value(x)*myfunc(x)))
                     ));
         }
-
-        // Fun-Fact: Die Ausgabe kann in eine Datei gespeichert werden und in Excel / OpenOffice Calc importiert werden,
-        //           um das Ergebnis in einem schnieken Diagramm zu bewundern :).
     }
 
 }
